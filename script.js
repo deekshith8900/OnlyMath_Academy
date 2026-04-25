@@ -88,6 +88,8 @@ document.addEventListener('DOMContentLoaded', async () => {
     const openSignupBtn = document.getElementById('openSignupBtn');
     const closeAuthBtn = document.querySelector('.close-btn');
     const authForm = document.getElementById('authForm');
+    const authName = document.getElementById('authName');
+    const nameInputGroup = document.getElementById('nameInputGroup');
     const authEmail = document.getElementById('authEmail');
     const authPassword = document.getElementById('authPassword');
     const authSubmitBtn = document.getElementById('authSubmitBtn');
@@ -161,12 +163,16 @@ document.addEventListener('DOMContentLoaded', async () => {
             authSubmitBtn.innerText = 'Sign In';
             authSwitchText.innerText = "Don't have an account?";
             authSwitchLink.innerText = "Sign Up";
+            if (nameInputGroup) nameInputGroup.style.display = 'none';
+            if (authName) authName.required = false;
         } else {
             modalTitle.innerText = 'Join OnlyMath';
             modalSubtitle.innerText = 'Create an account to start learning.';
             authSubmitBtn.innerText = 'Sign Up';
             authSwitchText.innerText = "Already have an account?";
             authSwitchLink.innerText = "Sign In";
+            if (nameInputGroup) nameInputGroup.style.display = 'block';
+            if (authName) authName.required = true;
         }
     }
 
@@ -216,8 +222,27 @@ document.addEventListener('DOMContentLoaded', async () => {
                     if (error) throw error;
                     closeModal();
                 } else {
-                    const { data, error } = await supabaseClient.auth.signUp({ email, password });
+                    const name = authName ? authName.value : '';
+                    const { data, error } = await supabaseClient.auth.signUp({ 
+                        email, 
+                        password,
+                        options: { data: { full_name: name } }
+                     });
                     if (error) throw error;
+                    
+                    // Insert into a user_profiles table so you have an accessible record
+                    if (data.user) {
+                        try {
+                            await supabaseClient.from('user_profiles').insert([{ 
+                                id: data.user.id, 
+                                email: email,
+                                full_name: name
+                            }]);
+                        } catch (profileErr) {
+                            console.error("Profile insert skipped/failed:", profileErr);
+                        }
+                    }
+
                     authMessage.innerText = 'Check your email for the confirmation link!';
                 }
             } catch (err) {
