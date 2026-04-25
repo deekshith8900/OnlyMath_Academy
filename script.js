@@ -84,7 +84,8 @@ document.addEventListener('DOMContentLoaded', async () => {
 
     // Auth Modal Elements
     const authModal = document.getElementById('authModal');
-    const openAuthBtn = document.getElementById('openAuthModal');
+    const openLoginBtn = document.getElementById('openLoginBtn');
+    const openSignupBtn = document.getElementById('openSignupBtn');
     const closeAuthBtn = document.querySelector('.close-btn');
     const authForm = document.getElementById('authForm');
     const authEmail = document.getElementById('authEmail');
@@ -121,17 +122,28 @@ document.addEventListener('DOMContentLoaded', async () => {
 
     function updateNavForUser() {
         if (currentUser) {
-            openAuthBtn.innerText = 'Log Out';
-            openAuthBtn.classList.replace('btn-outline', 'btn-secondary');
+            if (openLoginBtn) {
+                openLoginBtn.innerText = 'Log Out';
+                openLoginBtn.classList.replace('btn-outline', 'btn-secondary');
+            }
+            if (openSignupBtn) openSignupBtn.style.display = 'none';
         } else {
-            openAuthBtn.innerText = 'Log In';
-            openAuthBtn.classList.replace('btn-secondary', 'btn-outline');
+            if (openLoginBtn) {
+                openLoginBtn.innerText = 'Log In';
+                openLoginBtn.classList.replace('btn-secondary', 'btn-outline');
+            }
+            if (openSignupBtn) openSignupBtn.style.display = 'inline-block';
         }
     }
 
-    function openModal() {
+    function openModal(mode = 'login') {
         authModal.classList.add('show');
         authMessage.innerText = '';
+        if (mode === 'signup' && isLoginMode) {
+            toggleAuthMode(new Event('click'));
+        } else if (mode === 'login' && !isLoginMode) {
+            toggleAuthMode(new Event('click'));
+        }
     }
 
     function closeModal() {
@@ -158,8 +170,8 @@ document.addEventListener('DOMContentLoaded', async () => {
         }
     }
 
-    if (openAuthBtn) {
-        openAuthBtn.addEventListener('click', async (e) => {
+    if (openLoginBtn) {
+        openLoginBtn.addEventListener('click', async (e) => {
             e.preventDefault();
             if (currentUser) {
                 // Log Out
@@ -168,8 +180,15 @@ document.addEventListener('DOMContentLoaded', async () => {
                 currentUser = null;
                 updateNavForUser();
             } else {
-                openModal();
+                openModal('login');
             }
+        });
+    }
+
+    if (openSignupBtn) {
+        openSignupBtn.addEventListener('click', (e) => {
+            e.preventDefault();
+            if (!currentUser) openModal('signup');
         });
     }
 
