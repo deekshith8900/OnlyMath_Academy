@@ -1,8 +1,18 @@
-document.addEventListener('DOMContentLoaded', () => {
-    
+// SUPABASE SETUP (Replace these with your actual Supabase URL and Anon Key)
+const SUPABASE_URL = 'https://erxeomniqcgbxkmbsjud.supabase.co';
+const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImVyeGVvbW5pcWNnYnhrbWJzanVkIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzcxMzIyNTYsImV4cCI6MjA5MjcwODI1Nn0.NVS9lVhgftygPTse3L60_v9b0IDjsEyFy13m6MBSKBg';
+
+let supabaseClient = null;
+if (window.supabase && SUPABASE_URL) {
+    supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+}
+
+document.addEventListener('DOMContentLoaded', async () => {
+
+    // --- UI Interactions (Original Logics) ---
+
     // Navbar Scroll Effect
     const header = document.getElementById('header');
-    
     window.addEventListener('scroll', () => {
         if (window.scrollY > 50) {
             header.classList.add('scrolled');
@@ -11,27 +21,19 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 
-    // Mobile Menu Toggle (Basic implementation)
+    // Mobile Menu Toggle
     const hamburger = document.querySelector('.hamburger');
-    const navLinks = document.querySelector('.nav-links');
-    
-    // In a real app, you'd toggle a 'active' class on navLinks and add CSS for mobile view
-    // For now, simple alert if they click it since we hid it in CSS for mobile
-    if(hamburger) {
+    if (hamburger) {
         hamburger.addEventListener('click', () => {
             alert('Mobile menu feature coming soon! View on desktop for full experience.');
-            // navLinks.style.display = navLinks.style.display === 'flex' ? 'none' : 'flex';
-            // navLinks.style.flexDirection = 'column';
         });
     }
 
     // Scroll Reveal Animations
     const revealElements = document.querySelectorAll('.reveal, .reveal-left, .reveal-right');
-
     const revealOnScroll = () => {
         const windowHeight = window.innerHeight;
         const revealPoint = 150;
-
         revealElements.forEach(el => {
             const revealTop = el.getBoundingClientRect().top;
             if (revealTop < windowHeight - revealPoint) {
@@ -39,22 +41,18 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         });
     };
-
     window.addEventListener('scroll', revealOnScroll);
-    revealOnScroll(); // Trigger on load
+    revealOnScroll();
 
     // Number Counter Animation
     const counters = document.querySelectorAll('.counter');
-    let counted = false;
-
     const runCounters = () => {
         counters.forEach(counter => {
             counter.innerText = '0';
             const updateCounter = () => {
                 const target = +counter.getAttribute('data-target');
                 const c = +counter.innerText;
-                const increment = target / 50; // speed
-
+                const increment = target / 50;
                 if (c < target) {
                     counter.innerText = `${Math.ceil(c + increment)}`;
                     setTimeout(updateCounter, 30);
@@ -65,48 +63,201 @@ document.addEventListener('DOMContentLoaded', () => {
             updateCounter();
         });
     };
-
-    // Run counter only when hero section comes into view
-    // Since it's at top, we run it shortly after load
     setTimeout(runCounters, 500);
 
-    // Smooth Scroll for anchor links
+    // Smooth Scroll
     document.querySelectorAll('a[href^="#"]').forEach(anchor => {
         anchor.addEventListener('click', function (e) {
             e.preventDefault();
             const target = document.querySelector(this.getAttribute('href'));
-            
-            if(target) {
+            if (target) {
                 window.scrollTo({
-                    top: target.offsetTop - 80, // Offset for sticky header
+                    top: target.offsetTop - 80,
                     behavior: 'smooth'
                 });
             }
         });
     });
 
-    // Form submission simulation
-    const form = document.getElementById('contactForm');
-    if(form) {
-        form.addEventListener('submit', (e) => {
+
+    // --- Supabase & Auth Logic ---
+
+    // Auth Modal Elements
+    const authModal = document.getElementById('authModal');
+    const openAuthBtn = document.getElementById('openAuthModal');
+    const closeAuthBtn = document.querySelector('.close-btn');
+    const authForm = document.getElementById('authForm');
+    const authEmail = document.getElementById('authEmail');
+    const authPassword = document.getElementById('authPassword');
+    const authSubmitBtn = document.getElementById('authSubmitBtn');
+    const authSwitchLink = document.getElementById('authSwitchLink');
+    const authSwitchText = document.getElementById('authSwitchText');
+    const modalTitle = document.getElementById('modalTitle');
+    const modalSubtitle = document.getElementById('modalSubtitle');
+    const authMessage = document.getElementById('authMessage');
+
+    let isLoginMode = true;
+    let currentUser = null;
+
+    // Check existing session if connected to Supabase
+    if (supabaseClient) {
+        const { data } = await supabaseClient.auth.getSession();
+        if (data && data.session) {
+            currentUser = data.session.user;
+            updateNavForUser();
+        }
+
+        // Listen for auth changes
+        supabaseClient.auth.onAuthStateChange((event, session) => {
+            if (event === 'SIGNED_IN') {
+                currentUser = session.user;
+                updateNavForUser();
+            } else if (event === 'SIGNED_OUT') {
+                currentUser = null;
+                updateNavForUser();
+            }
+        });
+    }
+
+    function updateNavForUser() {
+        if (currentUser) {
+            openAuthBtn.innerText = 'Log Out';
+            openAuthBtn.classList.replace('btn-outline', 'btn-secondary');
+        } else {
+            openAuthBtn.innerText = 'Log In';
+            openAuthBtn.classList.replace('btn-secondary', 'btn-outline');
+        }
+    }
+
+    function openModal() {
+        authModal.classList.add('show');
+        authMessage.innerText = '';
+    }
+
+    function closeModal() {
+        authModal.classList.remove('show');
+        authForm.reset();
+    }
+
+    function toggleAuthMode(e) {
+        e.preventDefault();
+        isLoginMode = !isLoginMode;
+        authMessage.innerText = '';
+        if (isLoginMode) {
+            modalTitle.innerText = 'Welcome Back';
+            modalSubtitle.innerText = 'Sign in to access your courses.';
+            authSubmitBtn.innerText = 'Sign In';
+            authSwitchText.innerText = "Don't have an account?";
+            authSwitchLink.innerText = "Sign Up";
+        } else {
+            modalTitle.innerText = 'Join OnlyMath';
+            modalSubtitle.innerText = 'Create an account to start learning.';
+            authSubmitBtn.innerText = 'Sign Up';
+            authSwitchText.innerText = "Already have an account?";
+            authSwitchLink.innerText = "Sign In";
+        }
+    }
+
+    if (openAuthBtn) {
+        openAuthBtn.addEventListener('click', async (e) => {
             e.preventDefault();
-            const btn = form.querySelector('button');
+            if (currentUser) {
+                // Log Out
+                if (supabaseClient) await supabaseClient.auth.signOut();
+                else alert('Placeholder: Logged out!');
+                currentUser = null;
+                updateNavForUser();
+            } else {
+                openModal();
+            }
+        });
+    }
+
+    if (closeAuthBtn) closeAuthBtn.addEventListener('click', closeModal);
+    window.addEventListener('click', (e) => { if (e.target === authModal) closeModal(); });
+    if (authSwitchLink) authSwitchLink.addEventListener('click', toggleAuthMode);
+
+    if (authForm) {
+        authForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+
+            if (!supabaseClient) {
+                authMessage.innerText = 'Please connect Supabase by adding your URL & Key in script.js.';
+                return;
+            }
+
+            const email = authEmail.value;
+            const password = authPassword.value;
+            authSubmitBtn.disabled = true;
+            authSubmitBtn.innerText = 'Processing...';
+
+            try {
+                if (isLoginMode) {
+                    const { data, error } = await supabaseClient.auth.signInWithPassword({ email, password });
+                    if (error) throw error;
+                    closeModal();
+                } else {
+                    const { data, error } = await supabaseClient.auth.signUp({ email, password });
+                    if (error) throw error;
+                    authMessage.innerText = 'Check your email for the confirmation link!';
+                }
+            } catch (err) {
+                authMessage.innerText = err.message;
+            } finally {
+                authSubmitBtn.disabled = false;
+                authSubmitBtn.innerText = isLoginMode ? 'Sign In' : 'Sign Up';
+            }
+        });
+    }
+
+
+    // Contact Form Supabase Implementation
+    const contactForm = document.getElementById('contactForm');
+    if (contactForm) {
+        contactForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const btn = contactForm.querySelector('button');
             const originalText = btn.innerText;
-            
+
             btn.innerText = 'Sending...';
             btn.disabled = true;
-            
-            setTimeout(() => {
-                btn.innerText = 'Message Sent!';
-                btn.style.background = '#10b981'; // Green
-                form.reset();
-                
-                setTimeout(() => {
-                    btn.innerText = originalText;
-                    btn.style.background = '';
-                    btn.disabled = false;
-                }, 3000);
-            }, 1500);
+
+            const name = document.getElementById('name').value;
+            const email = document.getElementById('email').value;
+            const interest = document.getElementById('interest').value;
+
+            if (!supabaseClient) {
+                alert('Success Output Simulation! (To save this to DB, add your Supabase Keys in script.js)');
+                completeContactFormSuccess(btn, originalText);
+                return;
+            }
+
+            try {
+                // Assuming a table named 'contacts' exists with columns: name, email, interest
+                const { data, error } = await supabaseClient
+                    .from('contacts')
+                    .insert([{ name, email, interest }]);
+
+                if (error) throw error;
+                completeContactFormSuccess(btn, originalText);
+            } catch (err) {
+                console.error('Error inserting data:', err);
+                alert('Error submitting form: ' + err.message);
+                btn.innerText = originalText;
+                btn.disabled = false;
+            }
         });
+    }
+
+    function completeContactFormSuccess(btn, originalText) {
+        btn.innerText = 'Message Sent!';
+        btn.style.background = '#10b981'; // Green
+        contactForm.reset();
+
+        setTimeout(() => {
+            btn.innerText = originalText;
+            btn.style.background = '';
+            btn.disabled = false;
+        }, 3000);
     }
 });

@@ -9,6 +9,9 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&family=Outfit:wght@400;700;900&display=swap" rel="stylesheet">
     <!-- Boxicons for icons -->
     <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+    
+    <!-- Supabase CDN -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 </head>
 <body>
 
@@ -22,7 +25,7 @@
                 <li><a href="#courses">Courses</a></li>
                 <li><a href="#features">Features</a></li>
                 <li><a href="#testimonials">Testimonials</a></li>
-                <li><a href="#contact" class="btn btn-outline">Contact Us</a></li>
+                <li id="auth-nav-item"><a href="#" id="openAuthModal" class="btn btn-outline" style="margin-left: 1rem;">Log In</a></li>
             </ul>
             <div class="hamburger">
                 <i class='bx bx-menu'></i>
@@ -232,6 +235,31 @@
             </div>
         </div>
     </footer>
+
+    <!-- Auth Modal -->
+    <div id="authModal" class="modal">
+        <div class="modal-content glass-card">
+            <span class="close-btn">&times;</span>
+            <h2 id="modalTitle">Welcome Back</h2>
+            <p id="modalSubtitle">Sign in to access your courses.</p>
+            <form id="authForm">
+                <div class="input-group">
+                    <input type="email" id="authEmail" placeholder="Email Address" required>
+                </div>
+                <div class="input-group">
+                    <input type="password" id="authPassword" placeholder="Password" required>
+                </div>
+                <div class="input-group">
+                    <button type="submit" id="authSubmitBtn" class="btn btn-primary w-100">Sign In</button>
+                </div>
+                <p class="auth-switch">
+                    <span id="authSwitchText">Don't have an account?</span> 
+                    <a href="#" id="authSwitchLink">Sign Up</a>
+                </p>
+                <p id="authMessage" style="color: var(--accent-primary); margin-top: 1rem;"></p>
+            </form>
+        </div>
+    </div>
 
     <script src="script.js"></script>
 </body>
