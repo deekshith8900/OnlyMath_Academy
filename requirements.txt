@@ -1,0 +1,11 @@
+fastapi
+uvicorn
+pydantic
+groq
+pinecone-client
+supabase
+python-dotenv
+langchain
+langchain-community
+python-multipart
+requests
