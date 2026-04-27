@@ -267,6 +267,30 @@
         </div>
     </div>
 
+    <!-- Chatbot Widget -->
+    <div class="chatbot-widget">
+        <button id="chatbotToggle" class="chatbot-toggle-btn">
+            <i class='bx bx-message-dots'></i>
+        </button>
+        <div id="chatbotWindow" class="chatbot-window glass-card">
+            <div class="chatbot-header">
+                <h3>OnlyMath AI</h3>
+                <button id="chatbotClose" class="chatbot-close-btn">&times;</button>
+            </div>
+            <div id="chatbotMessages" class="chatbot-messages">
+                <div class="message bot-message">
+                    Hello! I'm the OnlyMath AI Assistant. How can I help you today?
+                </div>
+            </div>
+            <div class="chatbot-input-area">
+                <input type="text" id="chatbotInput" placeholder="Ask a question..." autocomplete="off" />
+                <button id="chatbotSend" class="chatbot-send-btn">
+                    <i class='bx bx-send'></i>
+                </button>
+            </div>
+        </div>
+    </div>
+
     <script src="script.js"></script>
 </body>
 </html>
