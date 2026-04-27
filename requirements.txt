@@ -5,7 +5,6 @@ groq
 pinecone-client
 supabase
 python-dotenv
-langchain
-langchain-community
+langchain-text-splitters
 python-multipart
 requests
