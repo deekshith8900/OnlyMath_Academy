@@ -155,6 +155,80 @@
             z-index: 10;
         }
 
+        /* Character Picker Modal */
+        .picker-modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.5);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 100;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.3s;
+        }
+
+        .picker-modal.open {
+            opacity: 1;
+            pointer-events: all;
+        }
+
+        .picker-content {
+            background: white;
+            border-radius: 30px;
+            padding: 2rem;
+            width: 90%;
+            max-width: 600px;
+            border: 5px solid #a855f7;
+            text-align: center;
+        }
+
+        .picker-content h2 {
+            font-family: 'Fredoka One', cursive;
+            color: #a855f7;
+            font-size: 2rem;
+            margin-top: 0;
+        }
+
+        .character-grid {
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            gap: 15px;
+            margin-top: 1rem;
+            max-height: 50vh;
+            overflow-y: auto;
+        }
+
+        .char-option {
+            font-size: 3rem;
+            cursor: pointer;
+            background: #f3f4f6;
+            border-radius: 15px;
+            padding: 10px;
+            transition: transform 0.2s, background 0.2s;
+        }
+
+        .char-option:active {
+            transform: scale(0.9);
+            background: #e5e7eb;
+        }
+
+        .close-picker-btn {
+            margin-top: 20px;
+            background: #ef4444;
+            color: white;
+            border: none;
+            padding: 10px 30px;
+            font-size: 1.5rem;
+            border-radius: 20px;
+            font-family: 'Fredoka One', cursive;
+            cursor: pointer;
+        }
+
     </style>
 </head>
 <body class="kids-mode">
@@ -162,7 +236,7 @@
     <div class="kids-header">
         <a href="index.html">← Back</a>
         <h1>Let's Count!</h1>
-        <div style="width: 80px;"></div> <!-- Spacer for center alignment -->
+        <button id="openPickerBtn" style="background: #a855f7; color: white; border: 3px solid #7e22ce; padding: 10px 20px; border-radius: 30px; font-weight: 900; font-size: 1.2rem; cursor: pointer;">Change 🐻</button>
     </div>
 
     <div class="play-area">
@@ -177,6 +251,17 @@
     <div class="controls">
         <button class="action-btn" id="addBtn">Add 🍎</button>
         <button class="action-btn reset" id="resetBtn">Start Over 🔄</button>
+    </div>
+
+    <!-- Character Picker Modal -->
+    <div id="pickerModal" class="picker-modal">
+        <div class="picker-content">
+            <h2>Pick What to Count!</h2>
+            <div class="character-grid" id="characterGrid">
+                <!-- Javascript will inject 20 characters here -->
+            </div>
+            <button id="closePickerBtn" class="close-picker-btn">Close</button>
+        </div>
     </div>
 
     <script src="kids.js"></script>

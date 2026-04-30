@@ -2,6 +2,11 @@ document.addEventListener('DOMContentLoaded', () => {
     let count = 0;
     const maxCount = 10; // Toddlers usually count up to 10
     
+    // 20 fun characters to count
+    const characters = ['🍎', '🐶', '🚗', '🎈', '⭐', '🦖', '🦋', '⚽', '🍕', '🚀', '🐱', '🐢', '🍦', '🍩', '🤖', '🐸', '🦄', '🌻', '🍓', '🐠'];
+    let currentItem = '🍎';
+    let currentItemName = 'apples'; // For speech
+
     const addBtn = document.getElementById('addBtn');
     const resetBtn = document.getElementById('resetBtn');
     const equationDisplay = document.getElementById('equation');
@@ -9,6 +14,29 @@ document.addEventListener('DOMContentLoaded', () => {
     const mascot = document.getElementById('mascot');
     const canvas = document.getElementById('confetti');
     const ctx = canvas ? canvas.getContext('2d') : null;
+    
+    // Picker Elements
+    const openPickerBtn = document.getElementById('openPickerBtn');
+    const pickerModal = document.getElementById('pickerModal');
+    const closePickerBtn = document.getElementById('closePickerBtn');
+    const characterGrid = document.getElementById('characterGrid');
+
+    // Initialize Character Grid
+    characters.forEach(char => {
+        const charDiv = document.createElement('div');
+        charDiv.className = 'char-option';
+        charDiv.innerText = char;
+        charDiv.addEventListener('click', () => {
+            currentItem = char;
+            addBtn.innerText = `Add ${char}`;
+            pickerModal.classList.remove('open');
+            resetGame();
+        });
+        characterGrid.appendChild(charDiv);
+    });
+
+    if (openPickerBtn) openPickerBtn.addEventListener('click', () => pickerModal.classList.add('open'));
+    if (closePickerBtn) closePickerBtn.addEventListener('click', () => pickerModal.classList.remove('open'));
 
     // Resize canvas for confetti
     function resizeCanvas() {
@@ -127,7 +155,7 @@ document.addEventListener('DOMContentLoaded', () => {
         // Add visual item
         const item = document.createElement('div');
         item.className = 'item';
-        item.innerText = '🍎';
+        item.innerText = currentItem;
         itemsContainer.appendChild(item);
         
         // Update math
@@ -155,20 +183,22 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 
-    resetBtn.addEventListener('click', () => {
+    function resetGame() {
         count = 0;
         itemsContainer.innerHTML = '';
         updateEquation();
         mascot.innerText = "🐻";
         mascot.style.animation = "bounce 2s infinite ease-in-out";
         if (ctx) ctx.clearRect(0, 0, canvas.width, canvas.height);
-        speakNumber("Let's count again!");
-    });
+        speakNumber("Let's count!");
+    }
+
+    resetBtn.addEventListener('click', resetGame);
 });
 
 // Global function for mascot click
 function mascotSpeak() {
-    const messages = ["Hello! Let's count apples!", "You are doing great!", "Math is fun!"];
+    const messages = ["Hello! Let's count together!", "You are doing great!", "Math is fun!"];
     const randomMsg = messages[Math.floor(Math.random() * messages.length)];
     
     const synth = window.speechSynthesis;
