@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>OnlyMath Kids | Fun Counting</title>
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka+One&family=Nunito:wght@700;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+    <!-- Inline styles for kids mode to avoid conflicts with main CSS -->
+    <style>
+        body.kids-mode {
+            background-color: #f0fdf4;
+            font-family: 'Nunito', sans-serif;
+            margin: 0;
+            overflow: hidden; /* Prevent scrolling for toddlers */
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: space-between;
+            height: 100vh;
+            color: #333;
+            user-select: none; /* Prevent text selection */
+        }
+
+        .kids-header {
+            width: 100%;
+            padding: 1rem;
+            display: flex;
+            justify-content: space-between;
+            box-sizing: border-box;
+            background: #fff;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+            border-bottom: 4px solid #4ade80;
+        }
+
+        .kids-header a {
+            text-decoration: none;
+            color: #ef4444;
+            font-weight: 900;
+            font-size: 1.5rem;
+            background: #fee2e2;
+            padding: 10px 20px;
+            border-radius: 30px;
+            border: 3px solid #ef4444;
+        }
+
+        .kids-header h1 {
+            margin: 0;
+            font-family: 'Fredoka One', cursive;
+            color: #3b82f6;
+            font-size: 2.5rem;
+            text-shadow: 2px 2px 0px #fff, 4px 4px 0px #bfdbfe;
+        }
+
+        .play-area {
+            flex-grow: 1;
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+        }
+
+        .mascot {
+            font-size: 6rem;
+            animation: bounce 2s infinite ease-in-out;
+            cursor: pointer;
+            margin-bottom: 1rem;
+        }
+
+        .equation-display {
+            font-family: 'Fredoka One', cursive;
+            font-size: 5rem;
+            color: #f59e0b;
+            text-shadow: 3px 3px 0px #fff;
+            margin-bottom: 2rem;
+            height: 100px; /* fixed height to prevent jumping */
+        }
+
+        .items-container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 15px;
+            max-width: 80%;
+            min-height: 150px;
+        }
+
+        .item {
+            font-size: 4rem;
+            animation: popIn 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+            transform: scale(0);
+        }
+
+        .controls {
+            width: 100%;
+            padding: 2rem;
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            box-sizing: border-box;
+            background: #fff;
+            border-top: 4px solid #fcd34d;
+        }
+
+        .action-btn {
+            background: #3b82f6;
+            color: white;
+            border: 4px solid #2563eb;
+            font-family: 'Fredoka One', cursive;
+            font-size: 2.5rem;
+            padding: 20px 40px;
+            border-radius: 50px;
+            cursor: pointer;
+            box-shadow: 0 8px 0 #1d4ed8, 0 15px 20px rgba(0,0,0,0.2);
+            transition: all 0.1s;
+        }
+
+        .action-btn:active {
+            transform: translateY(8px);
+            box-shadow: 0 0 0 #1d4ed8, 0 5px 10px rgba(0,0,0,0.2);
+        }
+
+        .action-btn.reset {
+            background: #ef4444;
+            border-color: #dc2626;
+            box-shadow: 0 8px 0 #b91c1c, 0 15px 20px rgba(0,0,0,0.2);
+            font-size: 1.5rem;
+        }
+        
+        .action-btn.reset:active {
+            box-shadow: 0 0 0 #b91c1c, 0 5px 10px rgba(0,0,0,0.2);
+        }
+
+        @keyframes bounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-20px); }
+        }
+
+        @keyframes popIn {
+            0% { transform: scale(0); }
+            80% { transform: scale(1.2); }
+            100% { transform: scale(1); }
+        }
+
+        /* Confetti Canvas */
+        #confetti {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 10;
+        }
+
+    </style>
+</head>
+<body class="kids-mode">
+
+    <div class="kids-header">
+        <a href="index.html">← Back</a>
+        <h1>Let's Count!</h1>
+        <div style="width: 80px;"></div> <!-- Spacer for center alignment -->
+    </div>
+
+    <div class="play-area">
+        <canvas id="confetti"></canvas>
+        <div class="mascot" id="mascot" onclick="mascotSpeak()">🐻</div>
+        <div class="equation-display" id="equation">0</div>
+        <div class="items-container" id="itemsContainer">
+            <!-- Items like apples will appear here -->
+        </div>
+    </div>
+
+    <div class="controls">
+        <button class="action-btn" id="addBtn">Add 🍎</button>
+        <button class="action-btn reset" id="resetBtn">Start Over 🔄</button>
+    </div>
+
+    <script src="kids.js"></script>
+</body>
+</html>
