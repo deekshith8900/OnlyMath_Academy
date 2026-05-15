@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Quizzes | OnlyMath Academy</title>
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&family=Outfit:wght@400;700;900&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <style>
+        .quiz-container { max-width: 600px; margin: 120px auto 40px auto; padding: 30px; }
+        .option-btn {
+            display: block; width: 100%; padding: 15px; margin-bottom: 10px;
+            background: rgba(255,255,255,0.05); border: 2px solid rgba(255,255,255,0.1);
+            color: white; border-radius: 10px; cursor: pointer; text-align: left;
+            font-size: 1.1rem; transition: all 0.2s;
+        }
+        .option-btn:hover { background: rgba(56, 189, 248, 0.2); border-color: #38bdf8; }
+        .option-btn.correct { background: #10b981; border-color: #059669; }
+        .option-btn.wrong { background: #ef4444; border-color: #b91c1c; }
+        #explanation { margin-top: 20px; padding: 15px; background: rgba(255,255,255,0.1); border-radius: 10px; display: none; }
+        #nextBtn { display: none; margin-top: 20px; width: 100%; }
+        .header-stats { display: flex; justify-content: space-between; margin-bottom: 20px; color: #38bdf8; font-weight: bold; }
+    </style>
+</head>
+<body class="dark-bg">
+
+    <header id="header" style="background: rgba(10, 10, 22, 0.9);">
+        <nav class="navbar container">
+            <a href="index.html" class="logo">Σ <span>OnlyMath</span></a>
+            <ul class="nav-links">
+                <li><a href="index.html">Home</a></li>
+                <li><a href="dashboard.html" style="color: #f59e0b; font-weight: bold;">Dashboard</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <div class="container quiz-container glass-card">
+        <div class="header-stats">
+            <span id="bountyCount">Bounties: 0</span>
+            <select id="quizLang" style="background: rgba(255,255,255,0.1); color: white; border-radius: 5px; padding: 5px;">
+                <option value="English">English</option>
+                <option value="Spanish">Español</option>
+                <option value="French">Français</option>
+                <option value="Hindi">हिन्दी</option>
+            </select>
+        </div>
+        
+        <h2 id="questionText" style="margin-bottom: 25px; color: white;">Loading your first question...</h2>
+        
+        <div id="optionsContainer">
+            <!-- Options injected here -->
+        </div>
+        
+        <div id="explanation"></div>
+        <button id="nextBtn" class="btn btn-primary">Generate Next Question</button>
+    </div>
+
+    <script src="quiz.js"></script>
+</body>
+</html>

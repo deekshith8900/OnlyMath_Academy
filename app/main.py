@@ -7,6 +7,7 @@ from dotenv import load_dotenv
 load_dotenv()
 
 from app.api.query import router as query_router
+from app.api.quiz import router as quiz_router
 
 app = FastAPI(
     title="OnlyMath AI Chatbot API",
@@ -25,6 +26,7 @@ app.add_middleware(
 
 # Include routers
 app.include_router(query_router, prefix="/api", tags=["api"])
+app.include_router(quiz_router, prefix="/api", tags=["quiz"])
 
 @app.get("/")
 async def root():

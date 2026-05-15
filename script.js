@@ -375,12 +375,15 @@ document.addEventListener('DOMContentLoaded', async () => {
             // Use relative path for Vercel deployment
             const backendUrl = '/api/query'; 
             
+            const chatLanguage = document.getElementById('chatLanguage');
+            const lang = chatLanguage ? chatLanguage.value : 'English';
+            
             const response = await fetch(backendUrl, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
                 },
-                body: JSON.stringify({ query: text, session_id: chatSessionId })
+                body: JSON.stringify({ query: text, session_id: chatSessionId, language: lang })
             });
 
             if (!response.ok) throw new Error('Network response was not ok');

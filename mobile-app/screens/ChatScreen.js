@@ -5,6 +5,8 @@ export default function ChatScreen() {
   const [messages, setMessages] = useState([{ text: "Hello! I'm the OnlyMath AI Assistant. How can I help you today?", isBot: true }]);
   const [input, setInput] = useState('');
   const [loading, setLoading] = useState(false);
+  const [language, setLanguage] = useState('English');
+  const languages = ['English', 'Spanish', 'French', 'Hindi'];
 
   const sendMessage = async () => {
     if (!input.trim()) return;
@@ -19,7 +21,7 @@ export default function ChatScreen() {
       const response = await fetch('http://127.0.0.1:8000/api/query', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ query: userMsg, session_id: 'mobile-app' })
+        body: JSON.stringify({ query: userMsg, session_id: 'mobile-app', language })
       });
       const data = await response.json();
       setMessages(prev => [...prev, { text: data.answer, isBot: true }]);
@@ -33,6 +35,15 @@ export default function ChatScreen() {
     <KeyboardAvoidingView style={styles.container} behavior={Platform.OS === 'ios' ? 'padding' : 'height'} keyboardVerticalOffset={90}>
       <View style={styles.header}>
         <Text style={styles.headerText}>OnlyMath AI Tutor</Text>
+      </View>
+      <View style={styles.langRow}>
+        <ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={{gap: 10, paddingHorizontal: 20}}>
+          {languages.map(lang => (
+            <TouchableOpacity key={lang} onPress={() => setLanguage(lang)} style={[styles.langBtn, language === lang && styles.langBtnActive]}>
+              <Text style={[styles.langBtnText, language === lang && styles.langBtnTextActive]}>{lang}</Text>
+            </TouchableOpacity>
+          ))}
+        </ScrollView>
       </View>
       <ScrollView contentContainerStyle={styles.chatArea}>
         {messages.map((msg, idx) => (
@@ -62,6 +73,11 @@ const styles = StyleSheet.create({
   container: { flex: 1, backgroundColor: '#0a0a16' },
   header: { padding: 20, paddingTop: 60, borderBottomWidth: 1, borderColor: 'rgba(255,255,255,0.1)' },
   headerText: { color: '#38bdf8', fontSize: 20, fontWeight: 'bold', textAlign: 'center' },
+  langRow: { borderBottomWidth: 1, borderColor: 'rgba(255,255,255,0.1)', paddingVertical: 10 },
+  langBtn: { paddingVertical: 5, paddingHorizontal: 15, borderRadius: 15, borderWidth: 1, borderColor: '#94a3b8' },
+  langBtnActive: { backgroundColor: '#38bdf8', borderColor: '#38bdf8' },
+  langBtnText: { color: '#94a3b8', fontSize: 12 },
+  langBtnTextActive: { color: '#0a0a16', fontWeight: 'bold' },
   chatArea: { padding: 20, gap: 15 },
   messageBubble: { padding: 15, borderRadius: 15, maxWidth: '80%' },
   botBubble: { backgroundColor: 'rgba(255,255,255,0.1)', alignSelf: 'flex-start' },

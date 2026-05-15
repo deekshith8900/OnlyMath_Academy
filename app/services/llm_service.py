@@ -21,7 +21,7 @@ CONTEXT:
 {retrieved_chunks}
 """
 
-async def generate_answer(query: str, context: str, chat_history: List[Dict] = None) -> str:
+async def generate_answer(query: str, context: str, chat_history: List[Dict] = None, language: str = "English") -> str:
     """
     Generates an answer using Groq and the provided context.
     """
@@ -33,6 +33,9 @@ async def generate_answer(query: str, context: str, chat_history: List[Dict] = N
     
     # System prompt with context
     formatted_system_prompt = SYSTEM_PROMPT.format(retrieved_chunks=context)
+    if language and language.lower() != "english":
+        formatted_system_prompt += f"\n\nIMPORTANT: You MUST translate your final answer and reply ONLY in the {language} language."
+    
     messages.append({"role": "system", "content": formatted_system_prompt})
     
     # Add chat history if available
