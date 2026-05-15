@@ -86,6 +86,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     const authModal = document.getElementById('authModal');
     const openLoginBtn = document.getElementById('openLoginBtn');
     const openSignupBtn = document.getElementById('openSignupBtn');
+    const dashboardBtn = document.getElementById('dashboardBtn');
     const closeAuthBtn = document.querySelector('.close-btn');
     const authForm = document.getElementById('authForm');
     const authName = document.getElementById('authName');
@@ -129,12 +130,14 @@ document.addEventListener('DOMContentLoaded', async () => {
                 openLoginBtn.classList.replace('btn-outline', 'btn-secondary');
             }
             if (openSignupBtn) openSignupBtn.style.display = 'none';
+            if (dashboardBtn) dashboardBtn.style.display = 'inline-block';
         } else {
             if (openLoginBtn) {
                 openLoginBtn.innerText = 'Log In';
                 openLoginBtn.classList.replace('btn-secondary', 'btn-outline');
             }
             if (openSignupBtn) openSignupBtn.style.display = 'inline-block';
+            if (dashboardBtn) dashboardBtn.style.display = 'none';
         }
     }
 
@@ -304,6 +307,28 @@ document.addEventListener('DOMContentLoaded', async () => {
             btn.disabled = false;
         }, 3000);
     }
+
+    // --- Age Filter Logic ---
+    const ageTabs = document.querySelectorAll('.age-tab');
+    const courseCards = document.querySelectorAll('.course-card');
+
+    ageTabs.forEach(tab => {
+        tab.addEventListener('click', () => {
+            // Remove active class
+            ageTabs.forEach(t => t.classList.remove('active'));
+            tab.classList.add('active');
+
+            const filter = tab.getAttribute('data-filter');
+
+            courseCards.forEach(card => {
+                if (filter === 'all' || card.getAttribute('data-age') === filter) {
+                    card.classList.remove('hidden');
+                } else {
+                    card.classList.add('hidden');
+                }
+            });
+        });
+    });
 
     // --- Chatbot Logic ---
     const chatbotToggle = document.getElementById('chatbotToggle');

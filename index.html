@@ -29,6 +29,7 @@
                 <li id="auth-nav-item">
                     <a href="#" id="openLoginBtn" class="btn btn-outline" style="margin-left: 1rem;">Log In</a>
                     <a href="#" id="openSignupBtn" class="btn btn-primary" style="margin-left: 0.5rem;">Sign Up</a>
+                    <a href="dashboard.html" id="dashboardBtn" class="btn btn-outline" style="margin-left: 1rem; display: none; border-color: #f59e0b; color: #f59e0b;">Dashboard</a>
                 </li>
             </ul>
             <div class="hamburger">
@@ -95,27 +96,56 @@
             <div class="section-header reveal">
                 <h2 class="section-title">Our Programs</h2>
                 <p>Comprehensive paths tailored to every level of expertise.</p>
+                
+                <div class="age-filter-tabs" style="display: flex; justify-content: center; gap: 10px; margin-top: 20px; flex-wrap: wrap;">
+                    <button class="age-tab active" data-filter="all">All Ages</button>
+                    <button class="age-tab" data-filter="2-5">Ages 2-5</button>
+                    <button class="age-tab" data-filter="5-10">Ages 5-10</button>
+                    <button class="age-tab" data-filter="10-15">Ages 10-15</button>
+                    <button class="age-tab" data-filter="15+">Ages 15+</button>
+                </div>
             </div>
-            <div class="courses-grid">
-                <!-- Course 1 -->
-                <div class="course-card glass-card reveal">
+            <div class="courses-grid" style="margin-top: 30px;">
+                <!-- Course: 2-5 -->
+                <div class="course-card glass-card reveal" data-age="2-5">
+                    <div class="course-icon"><i class='bx bx-cube-alt'></i></div>
+                    <h3>Shapes & Colors</h3>
+                    <p>Early childhood counting, basic shapes, and color recognition for toddlers.</p>
+                    <a href="#" class="course-link">Learn more <i class='bx bx-right-arrow-alt'></i></a>
+                </div>
+                <!-- Course: 5-10 -->
+                <div class="course-card glass-card reveal" data-age="5-10">
+                    <div class="course-icon"><i class='bx bx-plus-circle'></i></div>
+                    <h3>Addition Adventures</h3>
+                    <p>Fun, gamified introduction to arithmetic, multiplication tables, and fractions.</p>
+                    <a href="#" class="course-link">Learn more <i class='bx bx-right-arrow-alt'></i></a>
+                </div>
+                <!-- Course: 10-15 -->
+                <div class="course-card glass-card reveal" data-age="10-15">
                     <div class="course-icon"><i class='bx bx-shape-triangle'></i></div>
                     <h3>Foundational Geometry</h3>
                     <p>Understand shapes, sizes, relative position of figures, and the properties of space.</p>
                     <a href="#" class="course-link">Learn more <i class='bx bx-right-arrow-alt'></i></a>
                 </div>
-                <!-- Course 2 -->
-                <div class="course-card glass-card reveal delay-1">
+                <!-- Course: 10-15 -->
+                <div class="course-card glass-card reveal delay-1" data-age="10-15">
                     <div class="course-icon"><i class='bx bx-line-chart'></i></div>
                     <h3>Advanced Algebra</h3>
                     <p>Master variables, inequalities, functions, and complex algebraic structures.</p>
                     <a href="#" class="course-link">Learn more <i class='bx bx-right-arrow-alt'></i></a>
                 </div>
-                <!-- Course 3 -->
-                <div class="course-card glass-card reveal delay-2">
+                <!-- Course: 15+ -->
+                <div class="course-card glass-card reveal delay-2" data-age="15+">
                     <div class="course-icon"><i class='bx bx-data'></i></div>
                     <h3>Calculus & Analysis</h3>
                     <p>Dive deep into limits, derivatives, integrals, and infinite series.</p>
+                    <a href="#" class="course-link">Learn more <i class='bx bx-right-arrow-alt'></i></a>
+                </div>
+                <!-- Course: 15+ -->
+                <div class="course-card glass-card reveal" data-age="15+">
+                    <div class="course-icon"><i class='bx bx-bar-chart-alt-2'></i></div>
+                    <h3>Real World Statistics</h3>
+                    <p>Probability distributions, data analysis, and predictive modeling basics.</p>
                     <a href="#" class="course-link">Learn more <i class='bx bx-right-arrow-alt'></i></a>
                 </div>
             </div>

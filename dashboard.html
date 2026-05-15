@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Student Dashboard | OnlyMath Academy</title>
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&family=Outfit:wght@400;700;900&display=swap" rel="stylesheet">
+    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+</head>
+<body class="dark-bg">
+
+    <header id="header" style="background: rgba(10, 10, 22, 0.9);">
+        <nav class="navbar container">
+            <a href="index.html" class="logo">Σ <span>OnlyMath</span></a>
+            <ul class="nav-links">
+                <li><a href="index.html">Home</a></li>
+                <li><a href="kids.html" style="color: #f59e0b; font-weight: bold;">Kids Zone 🐻</a></li>
+                <li id="auth-nav-item">
+                    <a href="#" id="logoutBtn" class="btn btn-outline" style="margin-left: 1rem;">Log Out</a>
+                </li>
+            </ul>
+        </nav>
+    </header>
+
+    <section class="section" style="margin-top: 80px; min-height: 80vh;">
+        <div class="container">
+            <div class="glass-card" style="padding: 40px; text-align: center;">
+                <h1 style="font-family: 'Outfit', sans-serif; font-size: 2.5rem; color: #38bdf8; margin-bottom: 20px;">Welcome to Your Dashboard!</h1>
+                <h2 id="userName" style="color: #e2e8f0; margin-bottom: 10px;">Loading...</h2>
+                <p id="userEmail" style="color: #94a3b8; margin-bottom: 30px;">Loading...</p>
+                
+                <div style="display: flex; justify-content: center; gap: 20px; flex-wrap: wrap;">
+                    <div class="feature-item" style="background: rgba(255,255,255,0.05); padding: 30px; border-radius: 15px; border: 1px solid rgba(255,255,255,0.1); width: 300px;">
+                        <i class='bx bx-book-open' style="font-size: 3rem; color: #38bdf8; margin-bottom: 15px;"></i>
+                        <h3 style="color: #e2e8f0; margin-bottom: 10px;">My Courses</h3>
+                        <p style="color: #94a3b8;">You are not enrolled in any premium courses yet.</p>
+                    </div>
+                    <div class="feature-item" style="background: rgba(255,255,255,0.05); padding: 30px; border-radius: 15px; border: 1px solid rgba(255,255,255,0.1); width: 300px;">
+                        <i class='bx bx-trophy' style="font-size: 3rem; color: #f59e0b; margin-bottom: 15px;"></i>
+                        <h3 style="color: #e2e8f0; margin-bottom: 10px;">Rewards</h3>
+                        <p style="color: #94a3b8;">0 Bounties Collected. Keep learning to earn more!</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <script src="dashboard.js"></script>
+</body>
+</html>
