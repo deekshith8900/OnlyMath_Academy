@@ -23,9 +23,10 @@ document.addEventListener('DOMContentLoaded', async () => {
 
     // Mobile Menu Toggle
     const hamburger = document.querySelector('.hamburger');
-    if (hamburger) {
+    const navLinks = document.querySelector('.nav-links');
+    if (hamburger && navLinks) {
         hamburger.addEventListener('click', () => {
-            alert('Mobile menu feature coming soon! View on desktop for full experience.');
+            navLinks.classList.toggle('active');
         });
     }
 
