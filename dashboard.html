@@ -31,7 +31,8 @@
                 <h2 id="userName" style="color: #e2e8f0; margin-bottom: 10px;">Loading...</h2>
                 <p id="userEmail" style="color: #94a3b8; margin-bottom: 30px;">Loading...</p>
                 
-                <div style="display: flex; justify-content: center; gap: 20px; flex-wrap: wrap;">
+                <!-- Dashboard Cards -->
+                <div style="display: flex; justify-content: center; gap: 20px; flex-wrap: wrap; margin-bottom: 40px;">
                     <div class="feature-item" style="background: rgba(255,255,255,0.05); padding: 30px; border-radius: 15px; border: 1px solid rgba(255,255,255,0.1); width: 300px;">
                         <i class='bx bx-trophy' style="font-size: 3rem; color: #f59e0b; margin-bottom: 15px;"></i>
                         <h3 style="color: #e2e8f0; margin-bottom: 10px;">Rewards</h3>
@@ -43,6 +44,14 @@
                         <h3 style="color: #e2e8f0; margin-bottom: 10px;">Daily Challenge</h3>
                         <p style="color: #94a3b8; margin-bottom: 15px;">Current Streak: <span id="streakCount" style="color: #ef4444; font-weight: bold;">0 🔥</span></p>
                         <button id="startDailyBtn" class="btn btn-primary" style="padding: 10px 20px; font-size: 0.9rem;">Play Challenge</button>
+                    </div>
+                </div>
+
+                <!-- Badges Display Area -->
+                <div style="background: rgba(255,255,255,0.02); padding: 30px; border-radius: 15px; border: 1px solid rgba(255,255,255,0.1); text-align: center;">
+                    <h3 style="color: #c084fc; font-family: 'Outfit', sans-serif; font-size: 2rem; margin-bottom: 20px;">My Badges</h3>
+                    <div id="badgesContainer" style="display: flex; justify-content: center; gap: 20px; flex-wrap: wrap;">
+                        <p style="color: #94a3b8; width: 100%;">Loading achievements...</p>
                     </div>
                 </div>
 

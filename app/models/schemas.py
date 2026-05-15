@@ -19,3 +19,14 @@ class QuizResponse(BaseModel):
     options: List[str]
     correct_answer: str
     explanation: str
+
+class WorksheetRequest(BaseModel):
+    concept: str = "general math"
+    difficulty: str = "medium"
+
+class WorksheetProblem(BaseModel):
+    question: str
+    answer: str
+
+class WorksheetResponse(BaseModel):
+    problems: List[WorksheetProblem]

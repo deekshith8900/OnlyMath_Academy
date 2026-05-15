@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Printable Worksheets | OnlyMath</title>
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&family=Outfit:wght@400;700;900&display=swap" rel="stylesheet">
+    <style>
+        .worksheet-controls {
+            background: rgba(255,255,255,0.05);
+            padding: 30px;
+            border-radius: 15px;
+            border: 1px solid rgba(255,255,255,0.1);
+            max-width: 600px;
+            margin: 0 auto 40px auto;
+        }
+        
+        .worksheet-page {
+            background: white;
+            color: black;
+            padding: 40px;
+            border-radius: 8px;
+            max-width: 800px;
+            margin: 0 auto;
+            display: none;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+        }
+
+        .problem-item {
+            margin-bottom: 40px;
+            font-size: 1.2rem;
+            line-height: 1.5;
+        }
+
+        .answer-key-page {
+            background: white;
+            color: black;
+            padding: 40px;
+            border-radius: 8px;
+            max-width: 800px;
+            margin: 40px auto 0 auto;
+            display: none;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+        }
+
+        @media print {
+            body * {
+                visibility: hidden;
+            }
+            .worksheet-page, .worksheet-page *, .answer-key-page, .answer-key-page * {
+                visibility: visible;
+            }
+            .worksheet-page {
+                position: absolute;
+                left: 0;
+                top: 0;
+                width: 100%;
+                box-shadow: none;
+                margin: 0;
+                padding: 0;
+            }
+            .answer-key-page {
+                position: absolute;
+                left: 0;
+                top: 1100px; /* Rough estimate to force to next printed page if page-break fails */
+                page-break-before: always;
+                width: 100%;
+                box-shadow: none;
+                margin: 0;
+                padding: 0;
+            }
+        }
+    </style>
+</head>
+<body class="dark-bg">
+
+    <header id="header" style="background: rgba(10, 10, 22, 0.9);">
+        <nav class="navbar container">
+            <a href="index.html" class="logo">Σ <span>OnlyMath</span></a>
+            <ul class="nav-links">
+                <li><a href="index.html">Home</a></li>
+                <li><a href="quiz.html">Quizzes</a></li>
+                <li><a href="whiteboard.html">Whiteboard 🎨</a></li>
+                <li><a href="dashboard.html" class="btn btn-outline" style="margin-left: 1rem;">Dashboard</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <section class="section" style="margin-top: 80px; min-height: 80vh;">
+        <div class="container">
+            
+            <div style="text-align: center; margin-bottom: 40px;">
+                <h1 style="font-family: 'Outfit', sans-serif; font-size: 3rem; color: #38bdf8;">Printable Worksheets</h1>
+                <p style="color: #94a3b8; font-size: 1.2rem; max-width: 600px; margin: 0 auto;">Generate custom, offline-friendly math worksheets for your students.</p>
+            </div>
+
+            <div class="worksheet-controls" id="controlsArea">
+                <div style="margin-bottom: 15px;">
+                    <label style="color: #e2e8f0; display: block; margin-bottom: 5px;">Concept (e.g. Algebra, Calculus, Fractions)</label>
+                    <input type="text" id="wsConcept" class="input-field" placeholder="Algebra" value="Algebra" style="width: 100%; padding: 10px; border-radius: 8px; border: none; background: rgba(255,255,255,0.1); color: white;">
+                </div>
+                <div style="margin-bottom: 25px;">
+                    <label style="color: #e2e8f0; display: block; margin-bottom: 5px;">Difficulty</label>
+                    <select id="wsDifficulty" class="input-field" style="width: 100%; padding: 10px; border-radius: 8px; border: none; background: rgba(255,255,255,0.1); color: white;">
+                        <option value="easy">Easy</option>
+                        <option value="medium" selected>Medium</option>
+                        <option value="hard">Hard</option>
+                    </select>
+                </div>
+                <button id="generateBtn" class="btn btn-primary" style="width: 100%;">Generate Worksheet</button>
+                <p id="loadingMsg" style="color: #f59e0b; margin-top: 15px; display: none; text-align: center;">AI is writing the problems...</p>
+            </div>
+
+            <div style="text-align: center; margin-bottom: 20px;">
+                <button id="printBtn" class="btn btn-secondary" style="display: none; margin: 0 auto;">🖨️ Print Worksheet</button>
+            </div>
+
+            <!-- Worksheet Output -->
+            <div class="worksheet-page" id="worksheetPage">
+                <div style="display: flex; justify-content: space-between; border-bottom: 2px solid #ccc; padding-bottom: 10px; margin-bottom: 30px;">
+                    <h2 style="font-family: 'Outfit', sans-serif; font-size: 2rem;">OnlyMath Worksheet</h2>
+                    <div style="text-align: right;">
+                        <p>Name: ______________________</p>
+                        <p>Date: ______________________</p>
+                    </div>
+                </div>
+                
+                <h3 id="wsTitle" style="text-align: center; margin-bottom: 30px; font-size: 1.5rem;">Topic: Algebra (Medium)</h3>
+                
+                <div id="problemsContainer"></div>
+            </div>
+
+            <!-- Answer Key Output -->
+            <div class="answer-key-page" id="answerKeyPage">
+                <h2 style="font-family: 'Outfit', sans-serif; font-size: 2rem; border-bottom: 2px solid #ccc; padding-bottom: 10px; margin-bottom: 30px;">Answer Key</h2>
+                <div id="answersContainer"></div>
+            </div>
+
+        </div>
+    </section>
+
+    <script src="worksheets.js"></script>
+</body>
+</html>

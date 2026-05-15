@@ -49,6 +49,36 @@ document.addEventListener('DOMContentLoaded', async () => {
     document.getElementById('bountiesDisplay').innerText = `${bounties} Bounties Collected.`;
     document.getElementById('streakCount').innerText = `${currentStreak} 🔥`;
 
+    // Render Badges
+    const badgesContainer = document.getElementById('badgesContainer');
+    badgesContainer.innerHTML = '';
+    
+    const possibleBadges = [
+        { id: 'novice', icon: '🌱', name: 'Novice Learner', desc: 'Started your journey.', condition: bounties >= 10 },
+        { id: 'scholar', icon: '🏆', name: 'Math Scholar', desc: 'Earned 100+ Bounties.', condition: bounties >= 100 },
+        { id: 'streak_master', icon: '🔥', name: 'Unstoppable', desc: 'Reached a 3-day streak.', condition: currentStreak >= 3 },
+        { id: 'dedication', icon: '⭐', name: 'Pure Dedication', desc: 'Reached a 7-day streak.', condition: currentStreak >= 7 }
+    ];
+
+    let earnedAny = false;
+    possibleBadges.forEach(b => {
+        if (b.condition) {
+            earnedAny = true;
+            const badgeEl = document.createElement('div');
+            badgeEl.style.background = 'rgba(255,255,255,0.05)';
+            badgeEl.style.border = '1px solid #c084fc';
+            badgeEl.style.padding = '15px';
+            badgeEl.style.borderRadius = '10px';
+            badgeEl.style.width = '140px';
+            badgeEl.innerHTML = `<div style="font-size: 2.5rem; margin-bottom: 10px;">${b.icon}</div><div style="color: white; font-weight: bold; font-size: 0.9rem;">${b.name}</div><div style="color: #94a3b8; font-size: 0.75rem;">${b.desc}</div>`;
+            badgesContainer.appendChild(badgeEl);
+        }
+    });
+
+    if (!earnedAny) {
+        badgesContainer.innerHTML = '<p style="color: #94a3b8; width: 100%;">No badges earned yet. Keep solving problems to unlock them!</p>';
+    }
+
     // Daily Challenge Logic
     const startDailyBtn = document.getElementById('startDailyBtn');
     const dailyArea = document.getElementById('dailyChallengeArea');

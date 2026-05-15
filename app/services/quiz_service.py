@@ -43,3 +43,33 @@ JSON Output:"""
             "correct_answer": "1",
             "explanation": str(e)
         }
+
+async def generate_worksheet(difficulty: str, concept: str) -> dict:
+    if not client:
+        return {"problems": [{"question": "No API Key", "answer": "Set GROQ_API_KEY"}]}
+        
+    prompt = f"""You are an expert math teacher. Generate exactly 10 math problems about '{concept}' at a '{difficulty}' difficulty level.
+You MUST format your output EXACTLY as a valid JSON object with the following structure:
+{{
+  "problems": [
+    {{"question": "Problem 1 here", "answer": "Answer 1 here"}},
+    {{"question": "Problem 2 here", "answer": "Answer 2 here"}}
+  ]
+}}
+
+Provide exactly 10 problems. Make them suitable for a printed worksheet. DO NOT include multiple choices, just the question and the final answer.
+
+JSON Output:"""
+
+    try:
+        response = await client.chat.completions.create(
+            messages=[{"role": "user", "content": prompt}],
+            model=MODEL_NAME,
+            temperature=0.7,
+            response_format={"type": "json_object"}
+        )
+        content = response.choices[0].message.content.strip()
+        return json.loads(content)
+    except Exception as e:
+        print(f"Error generating worksheet: {e}")
+        return {"problems": [{"question": "Error generating worksheet.", "answer": str(e)}]}
