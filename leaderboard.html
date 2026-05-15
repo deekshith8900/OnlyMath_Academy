@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Global Leaderboard | OnlyMath</title>
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <style>
+        .leaderboard-container { max-width: 800px; margin: 120px auto 40px auto; padding: 20px; text-align: center; }
+        
+        /* Podium Styles */
+        .podium { display: flex; justify-content: center; align-items: flex-end; gap: 20px; margin: 40px 0; height: 200px; }
+        .podium-place { display: flex; flex-direction: column; align-items: center; justify-content: flex-end; border-radius: 10px 10px 0 0; color: #0a0a16; font-weight: bold; width: 100px; }
+        .place-2 { height: 120px; background: linear-gradient(to top, #c0c0c0, #e0e0e0); }
+        .place-1 { height: 180px; background: linear-gradient(to top, #fbbf24, #fde68a); }
+        .place-3 { height: 90px; background: linear-gradient(to top, #cd7f32, #e6a87c); }
+        .podium-name { margin-bottom: 10px; color: white; font-weight: bold; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 100px; }
+        
+        /* List Styles */
+        .leaderboard-list { background: rgba(255,255,255,0.05); border-radius: 10px; padding: 20px; text-align: left; }
+        .list-item { display: flex; justify-content: space-between; padding: 15px; border-bottom: 1px solid rgba(255,255,255,0.1); color: white; }
+        .list-item:last-child { border-bottom: none; }
+        .list-rank { color: #38bdf8; font-weight: bold; width: 30px; }
+        .list-bounties { color: #fbbf24; font-weight: bold; }
+    </style>
+</head>
+<body class="dark-bg">
+
+    <header id="header" style="background: rgba(10, 10, 22, 0.9);">
+        <nav class="navbar container">
+            <a href="index.html" class="logo">Σ <span>OnlyMath</span></a>
+            <ul class="nav-links">
+                <li><a href="index.html">Home</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <div class="container leaderboard-container">
+        <h1 style="color: white; margin-bottom: 10px;">Global Leaderboard 🏆</h1>
+        <p style="color: #94a3b8;">Solve AI Quizzes to earn Bounties and climb the ranks!</p>
+
+        <div id="loadingText" style="color: #38bdf8; margin-top: 40px;">Fetching top scholars...</div>
+
+        <div id="leaderboardContent" style="display: none;">
+            <div class="podium" id="podiumContainer">
+                <!-- Top 3 Injected Here -->
+            </div>
+
+            <div class="leaderboard-list" id="listContainer">
+                <!-- Ranks 4-10 Injected Here -->
+            </div>
+        </div>
+    </div>
+
+    <script src="leaderboard.js"></script>
+</body>
+</html>

@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Math Whiteboard | OnlyMath</title>
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet">
+    <style>
+        .whiteboard-container { max-width: 1000px; margin: 120px auto 40px auto; padding: 20px; text-align: center; }
+        .toolbar { display: flex; justify-content: center; gap: 15px; margin-bottom: 20px; background: rgba(255,255,255,0.05); padding: 15px; border-radius: 10px; }
+        .tool-btn { background: transparent; border: 1px solid #38bdf8; color: #38bdf8; padding: 8px 15px; border-radius: 5px; cursor: pointer; transition: all 0.2s; }
+        .tool-btn:hover, .tool-btn.active { background: #38bdf8; color: #0a0a16; }
+        .color-picker { width: 40px; height: 40px; border: none; cursor: pointer; border-radius: 50%; overflow: hidden; }
+        canvas { background: white; border-radius: 10px; box-shadow: 0 10px 30px rgba(0,0,0,0.5); cursor: crosshair; touch-action: none; max-width: 100%; }
+    </style>
+</head>
+<body class="dark-bg">
+
+    <header id="header" style="background: rgba(10, 10, 22, 0.9);">
+        <nav class="navbar container">
+            <a href="index.html" class="logo">Σ <span>OnlyMath</span></a>
+            <ul class="nav-links">
+                <li><a href="index.html">Home</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <div class="container whiteboard-container">
+        <h1 style="color: white; margin-bottom: 10px;">Digital Scratchpad 🎨</h1>
+        <p style="color: #94a3b8; margin-bottom: 20px;">Use this space to draw out equations, graph lines, or solve long division visually!</p>
+
+        <div class="toolbar">
+            <input type="color" id="colorPicker" class="color-picker" value="#000000" title="Choose Pen Color">
+            <button id="penBtn" class="tool-btn active">Pen</button>
+            <button id="eraserBtn" class="tool-btn">Eraser</button>
+            <button id="clearBtn" class="tool-btn" style="border-color: #ef4444; color: #ef4444;">Clear Board</button>
+        </div>
+
+        <canvas id="mathCanvas" width="800" height="500"></canvas>
+    </div>
+
+    <script src="whiteboard.js"></script>
+</body>
+</html>
