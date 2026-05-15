@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Community Help Board | OnlyMath</title>
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <style>
+        .community-container { max-width: 800px; margin: 120px auto 40px auto; padding: 20px; }
+        .post-box { background: rgba(255,255,255,0.05); padding: 20px; border-radius: 10px; margin-bottom: 20px; border: 1px solid rgba(255,255,255,0.1); }
+        .post-box h3 { color: #38bdf8; margin-bottom: 10px; }
+        .post-input { width: 100%; padding: 15px; background: rgba(0,0,0,0.2); border: 1px solid rgba(255,255,255,0.2); color: white; border-radius: 8px; margin-bottom: 10px; resize: vertical; min-height: 100px; }
+        .question-card { background: rgba(10,10,22,0.8); padding: 20px; border-radius: 10px; margin-bottom: 15px; border-left: 4px solid #f59e0b; }
+        .question-card p { margin-bottom: 15px; color: #e2e8f0; }
+        .reply-btn { background: transparent; border: 1px solid #38bdf8; color: #38bdf8; padding: 5px 15px; border-radius: 15px; cursor: pointer; }
+        .reply-btn:hover { background: #38bdf8; color: #0a0a16; }
+    </style>
+</head>
+<body class="dark-bg">
+
+    <header id="header" style="background: rgba(10, 10, 22, 0.9);">
+        <nav class="navbar container">
+            <a href="index.html" class="logo">Σ <span>OnlyMath</span></a>
+            <ul class="nav-links">
+                <li><a href="index.html">Home</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <div class="container community-container">
+        <h1 style="color: white; margin-bottom: 10px;">Peer-to-Peer Help Board 🤝</h1>
+        <p style="color: #94a3b8; margin-bottom: 30px;">Stuck on a math problem? Ask the community! Tutors and peers are here to help.</p>
+
+        <div class="post-box">
+            <h3>Ask a Question</h3>
+            <textarea id="questionInput" class="post-input" placeholder="What are you struggling with? (e.g. 'How do I solve a quadratic equation using the formula?')"></textarea>
+            <button id="postBtn" class="btn btn-primary">Post Question</button>
+        </div>
+
+        <div id="questionsList">
+            <!-- Questions injected here -->
+            <p id="loadingText" style="color: #94a3b8;">Loading community questions...</p>
+        </div>
+    </div>
+
+    <script src="community.js"></script>
+</body>
+</html>

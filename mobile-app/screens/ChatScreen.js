@@ -1,5 +1,6 @@
-import React, { useState } from 'react';
-import { View, Text, TextInput, TouchableOpacity, ScrollView, StyleSheet, KeyboardAvoidingView, Platform } from 'react-native';
+import React, { useState, useEffect } from 'react';
+import { View, Text, TextInput, TouchableOpacity, ScrollView, StyleSheet, KeyboardAvoidingView, Platform, ActivityIndicator } from 'react-native';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 export default function ChatScreen() {
   const [messages, setMessages] = useState([{ text: "Hello! I'm the OnlyMath AI Assistant. How can I help you today?", isBot: true }]);
@@ -8,27 +9,50 @@ export default function ChatScreen() {
   const [language, setLanguage] = useState('English');
   const languages = ['English', 'Spanish', 'French', 'Hindi'];
 
+  useEffect(() => {
+    loadOfflineMessages();
+  }, []);
+
+  const loadOfflineMessages = async () => {
+    try {
+      const stored = await AsyncStorage.getItem('@onlymath_chat');
+      if (stored) setMessages(JSON.parse(stored));
+    } catch (e) { console.warn('Offline load error', e); }
+  };
+
+  const saveOfflineMessages = async (msgs) => {
+    try {
+      await AsyncStorage.setItem('@onlymath_chat', JSON.stringify(msgs));
+    } catch (e) { console.warn('Offline save error', e); }
+  };
+
   const sendMessage = async () => {
     if (!input.trim()) return;
     const userMsg = input.trim();
-    setMessages(prev => [...prev, { text: userMsg, isBot: false }]);
     setInput('');
+    const newMessages = [...messages, { text: userMsg, isBot: false }];
+    setMessages(newMessages);
+    saveOfflineMessages(newMessages);
     setLoading(true);
 
     try {
-      // Connect to the Python API. Since this runs on an emulator/device, use local IP or Vercel URL
-      // For local testing on Android emulator, use 10.0.2.2:8000. On iOS simulator, localhost:8000
       const response = await fetch('http://127.0.0.1:8000/api/query', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ query: userMsg, session_id: 'mobile-app', language })
       });
       const data = await response.json();
-      setMessages(prev => [...prev, { text: data.answer, isBot: true }]);
-    } catch (e) {
-      setMessages(prev => [...prev, { text: "Sorry, I am having trouble connecting to the server.", isBot: true }]);
+      const finalMsgs = [...newMessages, { text: data.answer, isBot: true }];
+      setMessages(finalMsgs);
+      saveOfflineMessages(finalMsgs);
+    } catch (error) {
+      console.error(error);
+      const errorMsgs = [...newMessages, { text: "⚠️ (Offline Mode)\nI couldn't reach the server. Your chat history is saved locally. Please connect to the internet to ask new questions.", isBot: true }];
+      setMessages(errorMsgs);
+      saveOfflineMessages(errorMsgs);
+    } finally {
+      setLoading(false);
     }
-    setLoading(false);
   };
 
   return (
