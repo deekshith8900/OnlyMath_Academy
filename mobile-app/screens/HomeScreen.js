@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
-import { View, Text, StyleSheet, ScrollView, TouchableOpacity } from 'react-native';
+import { View, Text, StyleSheet, ScrollView, TouchableOpacity, Alert } from 'react-native';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import { supabase } from '../utils/supabase';
 
 const COURSES = [
@@ -11,13 +12,14 @@ const COURSES = [
   { age: '15+', title: 'Real World Statistics', desc: 'Probability distributions, data analysis, and predictive modeling basics.' },
 ];
 
-export default function HomeScreen({ navigation }) {
   const [user, setUser] = useState(null);
   const [activeFilter, setActiveFilter] = useState('all');
+  const [downloadedCourses, setDownloadedCourses] = useState({});
 
   const filteredCourses = activeFilter === 'all' ? COURSES : COURSES.filter(c => c.age === activeFilter);
 
   useEffect(() => {
+    loadDownloadedCourses();
     supabase.auth.getSession().then(({ data: { session } }) => {
       setUser(session?.user ?? null);
     });
@@ -34,6 +36,26 @@ export default function HomeScreen({ navigation }) {
       await supabase.auth.signOut();
     } else {
       navigation.navigate('Auth');
+    }
+  };
+
+  const loadDownloadedCourses = async () => {
+    try {
+      const stored = await AsyncStorage.getItem('@downloaded_courses');
+      if (stored) {
+        setDownloadedCourses(JSON.parse(stored));
+      }
+    } catch (e) { console.warn(e); }
+  };
+
+  const handleDownloadCourse = async (course) => {
+    try {
+      const newDownloads = { ...downloadedCourses, [course.title]: true };
+      await AsyncStorage.setItem('@downloaded_courses', JSON.stringify(newDownloads));
+      setDownloadedCourses(newDownloads);
+      Alert.alert('Success', `"${course.title}" has been saved for offline learning!`);
+    } catch (e) {
+      Alert.alert('Error', 'Failed to download course.');
     }
   };
 
@@ -69,12 +91,23 @@ export default function HomeScreen({ navigation }) {
       </ScrollView>
 
       <View style={styles.cardContainer}>
-        {filteredCourses.map((course, idx) => (
-          <View key={idx} style={styles.card}>
-            <Text style={styles.cardTitle}>{course.title}</Text>
-            <Text style={styles.cardDesc}>{course.desc}</Text>
-          </View>
-        ))}
+        {filteredCourses.map((course, idx) => {
+          const isDownloaded = downloadedCourses[course.title];
+          return (
+            <View key={idx} style={styles.card}>
+              <Text style={styles.cardTitle}>{course.title}</Text>
+              <Text style={styles.cardDesc}>{course.desc}</Text>
+              <TouchableOpacity 
+                style={[styles.downloadBtn, isDownloaded && styles.downloadBtnActive]} 
+                onPress={() => !isDownloaded && handleDownloadCourse(course)}
+              >
+                <Text style={styles.downloadBtnText}>
+                  {isDownloaded ? '✅ Available Offline' : '📥 Download Course'}
+                </Text>
+              </TouchableOpacity>
+            </View>
+          );
+        })}
       </View>
     </ScrollView>
   );
@@ -150,6 +183,25 @@ const styles = StyleSheet.create({
   cardDesc: {
     color: '#94a3b8',
     lineHeight: 22,
+    marginBottom: 15,
+  },
+  downloadBtn: {
+    backgroundColor: 'rgba(56, 189, 248, 0.1)',
+    borderWidth: 1,
+    borderColor: '#38bdf8',
+    padding: 10,
+    borderRadius: 8,
+    alignItems: 'center',
+    marginTop: 10,
+  },
+  downloadBtnActive: {
+    backgroundColor: 'rgba(16, 185, 129, 0.1)',
+    borderColor: '#10b981',
+  },
+  downloadBtnText: {
+    color: 'white',
+    fontSize: 14,
+    fontWeight: 'bold',
   },
   filterTabs: {
     paddingBottom: 20,
