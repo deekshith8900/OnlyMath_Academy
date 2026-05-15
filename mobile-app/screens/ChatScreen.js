@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { View, Text, TextInput, TouchableOpacity, ScrollView, StyleSheet, KeyboardAvoidingView, Platform, ActivityIndicator } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import * as Speech from 'expo-speech';
 
 export default function ChatScreen() {
   const [messages, setMessages] = useState([{ text: "Hello! I'm the OnlyMath AI Assistant. How can I help you today?", isBot: true }]);
@@ -72,7 +73,24 @@ export default function ChatScreen() {
       <ScrollView contentContainerStyle={styles.chatArea}>
         {messages.map((msg, idx) => (
           <View key={idx} style={[styles.messageBubble, msg.isBot ? styles.botBubble : styles.userBubble]}>
-            <Text style={[styles.messageText, msg.isBot ? styles.botText : styles.userText]}>{msg.text}</Text>
+            <View style={{ flexDirection: 'row', alignItems: 'flex-start', justifyContent: 'space-between' }}>
+              <Text style={[styles.messageText, msg.isBot ? styles.botText : styles.userText, { flex: 1 }]}>{msg.text}</Text>
+              {msg.isBot && (
+                <TouchableOpacity 
+                  onPress={() => {
+                    Speech.stop();
+                    let langCode = 'en-US';
+                    if (language === 'Spanish') langCode = 'es-ES';
+                    else if (language === 'French') langCode = 'fr-FR';
+                    else if (language === 'Hindi') langCode = 'hi-IN';
+                    Speech.speak(msg.text, { language: langCode });
+                  }}
+                  style={{ paddingLeft: 10 }}
+                >
+                  <Text style={{ fontSize: 18 }}>🔊</Text>
+                </TouchableOpacity>
+              )}
+            </View>
           </View>
         ))}
         {loading && <Text style={styles.typingText}>AI is typing...</Text>}

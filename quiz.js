@@ -52,6 +52,19 @@ async function loadQuiz() {
         
         document.getElementById('questionText').innerText = currentQuiz.question;
         
+        const listenBtn = document.getElementById('listenQuizBtn');
+        listenBtn.style.display = 'inline-block';
+        listenBtn.onclick = () => {
+            window.speechSynthesis.cancel();
+            const utterance = new SpeechSynthesisUtterance(currentQuiz.question);
+            const selectedLang = document.getElementById('quizLang').value;
+            if (selectedLang === 'Spanish') utterance.lang = 'es-ES';
+            else if (selectedLang === 'French') utterance.lang = 'fr-FR';
+            else if (selectedLang === 'Hindi') utterance.lang = 'hi-IN';
+            else utterance.lang = 'en-US';
+            window.speechSynthesis.speak(utterance);
+        };
+        
         currentQuiz.options.forEach(opt => {
             const btn = document.createElement('button');
             btn.className = 'option-btn';

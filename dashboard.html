@@ -33,15 +33,25 @@
                 
                 <div style="display: flex; justify-content: center; gap: 20px; flex-wrap: wrap;">
                     <div class="feature-item" style="background: rgba(255,255,255,0.05); padding: 30px; border-radius: 15px; border: 1px solid rgba(255,255,255,0.1); width: 300px;">
-                        <i class='bx bx-book-open' style="font-size: 3rem; color: #38bdf8; margin-bottom: 15px;"></i>
-                        <h3 style="color: #e2e8f0; margin-bottom: 10px;">My Courses</h3>
-                        <p style="color: #94a3b8;">You are not enrolled in any premium courses yet.</p>
-                    </div>
-                    <div class="feature-item" style="background: rgba(255,255,255,0.05); padding: 30px; border-radius: 15px; border: 1px solid rgba(255,255,255,0.1); width: 300px;">
                         <i class='bx bx-trophy' style="font-size: 3rem; color: #f59e0b; margin-bottom: 15px;"></i>
                         <h3 style="color: #e2e8f0; margin-bottom: 10px;">Rewards</h3>
-                        <p style="color: #94a3b8;">0 Bounties Collected. Keep learning to earn more!</p>
+                        <p style="color: #94a3b8;" id="bountiesDisplay">0 Bounties Collected.</p>
                     </div>
+
+                    <div class="feature-item" style="background: rgba(255,255,255,0.05); padding: 30px; border-radius: 15px; border: 1px solid rgba(255,255,255,0.1); width: 300px;">
+                        <i class='bx bx-calendar-star' style="font-size: 3rem; color: #ef4444; margin-bottom: 15px;"></i>
+                        <h3 style="color: #e2e8f0; margin-bottom: 10px;">Daily Challenge</h3>
+                        <p style="color: #94a3b8; margin-bottom: 15px;">Current Streak: <span id="streakCount" style="color: #ef4444; font-weight: bold;">0 🔥</span></p>
+                        <button id="startDailyBtn" class="btn btn-primary" style="padding: 10px 20px; font-size: 0.9rem;">Play Challenge</button>
+                    </div>
+                </div>
+
+                <!-- Daily Challenge Modal/Area -->
+                <div id="dailyChallengeArea" style="display: none; margin-top: 40px; background: rgba(0,0,0,0.3); padding: 30px; border-radius: 15px; border: 1px solid #38bdf8;">
+                    <h3 style="color: #38bdf8; margin-bottom: 20px;">Today's Challenge</h3>
+                    <h2 id="dailyQuestion" style="color: white; margin-bottom: 25px;">Loading...</h2>
+                    <div id="dailyOptions" style="display: flex; flex-direction: column; gap: 10px; max-width: 400px; margin: 0 auto;"></div>
+                    <p id="dailyExplanation" style="color: #10b981; margin-top: 20px; display: none;"></p>
                 </div>
             </div>
         </div>

@@ -403,7 +403,32 @@ document.addEventListener('DOMContentLoaded', async () => {
     function appendMessage(text, className) {
         const msgDiv = document.createElement('div');
         msgDiv.className = `message ${className}`;
-        msgDiv.textContent = text;
+        
+        const textSpan = document.createElement('span');
+        textSpan.textContent = text;
+        msgDiv.appendChild(textSpan);
+
+        if (className === 'bot-message') {
+            const listenBtn = document.createElement('button');
+            listenBtn.innerHTML = '🔊';
+            listenBtn.style.marginLeft = '10px';
+            listenBtn.style.background = 'none';
+            listenBtn.style.border = 'none';
+            listenBtn.style.cursor = 'pointer';
+            listenBtn.title = 'Listen';
+            listenBtn.onclick = () => {
+                window.speechSynthesis.cancel(); // Stop current
+                const utterance = new SpeechSynthesisUtterance(text);
+                const lang = document.getElementById('chatLanguage') ? document.getElementById('chatLanguage').value : 'English';
+                if (lang === 'Spanish') utterance.lang = 'es-ES';
+                else if (lang === 'French') utterance.lang = 'fr-FR';
+                else if (lang === 'Hindi') utterance.lang = 'hi-IN';
+                else utterance.lang = 'en-US';
+                window.speechSynthesis.speak(utterance);
+            };
+            msgDiv.appendChild(listenBtn);
+        }
+
         chatbotMessages.appendChild(msgDiv);
         chatbotMessages.scrollTop = chatbotMessages.scrollHeight;
     }
