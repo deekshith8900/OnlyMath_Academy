@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Focus Timer | OnlyMath Academy</title>
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&family=Outfit:wght@400;700;900&display=swap" rel="stylesheet">
+    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <style>
+        .timer-circle {
+            width: 300px;
+            height: 300px;
+            border-radius: 50%;
+            border: 8px solid rgba(255,255,255,0.1);
+            border-top-color: #f59e0b;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 40px auto;
+            position: relative;
+            transition: all 0.3s ease;
+        }
+        
+        .timer-display {
+            font-size: 5rem;
+            font-family: 'Outfit', sans-serif;
+            font-weight: bold;
+            color: white;
+        }
+
+        .timer-status {
+            position: absolute;
+            bottom: 40px;
+            color: #94a3b8;
+            font-size: 1.2rem;
+        }
+
+        .pulsate {
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0% { box-shadow: 0 0 0 0 rgba(245, 158, 11, 0.4); }
+            70% { box-shadow: 0 0 0 20px rgba(245, 158, 11, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(245, 158, 11, 0); }
+        }
+    </style>
+</head>
+<body class="dark-bg">
+
+    <header id="header" style="background: rgba(10, 10, 22, 0.9);">
+        <nav class="navbar container">
+            <a href="index.html" class="logo">Σ <span>OnlyMath</span></a>
+            <ul class="nav-links">
+                <li><a href="index.html">Home</a></li>
+                <li><a href="quiz.html">Quizzes</a></li>
+                <li><a href="worksheets.html">Worksheets 🖨️</a></li>
+                <li><a href="dashboard.html" class="btn btn-outline" style="margin-left: 1rem;">Dashboard</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <section class="section" style="margin-top: 80px; min-height: 80vh;">
+        <div class="container" style="text-align: center;">
+            
+            <h1 style="font-family: 'Outfit', sans-serif; font-size: 3rem; color: #38bdf8; margin-bottom: 10px;">Study Timer</h1>
+            <p style="color: #94a3b8; font-size: 1.2rem; margin-bottom: 50px;">Complete a 25-minute focus session to earn +5 Bounties!</p>
+
+            <div class="timer-circle" id="timerCircle">
+                <div class="timer-display" id="timeDisplay">25:00</div>
+                <div class="timer-status" id="timerStatus">Ready to Focus</div>
+            </div>
+
+            <div style="display: flex; justify-content: center; gap: 20px;">
+                <button id="startBtn" class="btn btn-primary" style="font-size: 1.2rem; padding: 15px 40px;"><i class='bx bx-play'></i> Start</button>
+                <button id="resetBtn" class="btn btn-outline" style="font-size: 1.2rem; padding: 15px 40px; display: none;"><i class='bx bx-reset'></i> Reset</button>
+            </div>
+            
+            <div id="rewardMsg" style="margin-top: 30px; color: #10b981; font-size: 1.2rem; font-weight: bold; display: none;">
+                🎉 Focus session complete! You earned +5 Bounties!
+            </div>
+
+        </div>
+    </section>
+
+    <script src="timer.js"></script>
+</body>
+</html>

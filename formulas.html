@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Math Formulas | OnlyMath Academy</title>
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&family=Outfit:wght@400;700;900&display=swap" rel="stylesheet">
+    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+    <!-- MathJax for rendering LaTeX math formulas -->
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <style>
+        .formula-card {
+            background: rgba(255,255,255,0.05);
+            padding: 30px;
+            border-radius: 15px;
+            border: 1px solid rgba(255,255,255,0.1);
+            margin-bottom: 20px;
+            transition: all 0.3s ease;
+        }
+        .formula-card:hover {
+            border-color: #38bdf8;
+            transform: translateY(-5px);
+        }
+        .formula-title {
+            color: #38bdf8;
+            font-size: 1.2rem;
+            margin-bottom: 10px;
+            font-family: 'Outfit', sans-serif;
+        }
+        .formula-math {
+            font-size: 1.5rem;
+            color: white;
+            padding: 15px;
+            background: rgba(0,0,0,0.3);
+            border-radius: 8px;
+            text-align: center;
+            overflow-x: auto;
+        }
+        .search-bar {
+            width: 100%;
+            max-width: 600px;
+            padding: 15px 25px;
+            border-radius: 30px;
+            border: 1px solid rgba(255,255,255,0.2);
+            background: rgba(255,255,255,0.05);
+            color: white;
+            font-size: 1.1rem;
+            margin: 0 auto 40px auto;
+            display: block;
+        }
+        .search-bar:focus {
+            outline: none;
+            border-color: #38bdf8;
+            background: rgba(255,255,255,0.1);
+        }
+        .category-header {
+            color: #f59e0b;
+            font-size: 2rem;
+            margin-top: 40px;
+            margin-bottom: 20px;
+            border-bottom: 1px solid rgba(245, 158, 11, 0.3);
+            padding-bottom: 10px;
+            font-family: 'Outfit', sans-serif;
+        }
+    </style>
+</head>
+<body class="dark-bg">
+
+    <header id="header" style="background: rgba(10, 10, 22, 0.9);">
+        <nav class="navbar container">
+            <a href="index.html" class="logo">Σ <span>OnlyMath</span></a>
+            <ul class="nav-links">
+                <li><a href="index.html">Home</a></li>
+                <li><a href="quiz.html">Quizzes</a></li>
+                <li><a href="timer.html">Timer ⏱️</a></li>
+                <li><a href="dashboard.html" class="btn btn-outline" style="margin-left: 1rem;">Dashboard</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <section class="section" style="margin-top: 80px; min-height: 80vh;">
+        <div class="container">
+            
+            <div style="text-align: center; margin-bottom: 30px;">
+                <h1 style="font-family: 'Outfit', sans-serif; font-size: 3rem; color: #38bdf8;">Formula Glossary</h1>
+                <p style="color: #94a3b8; font-size: 1.2rem;">Quick reference for essential mathematical formulas.</p>
+            </div>
+
+            <input type="text" id="searchInput" class="search-bar" placeholder="Search for a formula (e.g. Quadratic, Area...)">
+
+            <!-- ALGEBRA -->
+            <h2 class="category-header">Algebra</h2>
+            <div class="formula-grid" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 20px;">
+                
+                <div class="formula-card formula-item">
+                    <h3 class="formula-title">Quadratic Formula</h3>
+                    <p style="color: #94a3b8; font-size: 0.9rem; margin-bottom: 10px;">Roots of \(ax^2 + bx + c = 0\)</p>
+                    <div class="formula-math">
+                        $$x = \frac{-b \pm \sqrt{b^2 - 4ac}}{2a}$$
+                    </div>
+                </div>
+
+                <div class="formula-card formula-item">
+                    <h3 class="formula-title">Slope-Intercept Form</h3>
+                    <p style="color: #94a3b8; font-size: 0.9rem; margin-bottom: 10px;">Equation of a straight line.</p>
+                    <div class="formula-math">
+                        $$y = mx + b$$
+                    </div>
+                </div>
+
+                <div class="formula-card formula-item">
+                    <h3 class="formula-title">Distance Formula</h3>
+                    <p style="color: #94a3b8; font-size: 0.9rem; margin-bottom: 10px;">Distance between two points \((x_1, y_1)\) and \((x_2, y_2)\).</p>
+                    <div class="formula-math">
+                        $$d = \sqrt{(x_2 - x_1)^2 + (y_2 - y_1)^2}$$
+                    </div>
+                </div>
+
+            </div>
+
+            <!-- GEOMETRY -->
+            <h2 class="category-header">Geometry</h2>
+            <div class="formula-grid" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 20px;">
+                
+                <div class="formula-card formula-item">
+                    <h3 class="formula-title">Pythagorean Theorem</h3>
+                    <p style="color: #94a3b8; font-size: 0.9rem; margin-bottom: 10px;">Right-angled triangle sides.</p>
+                    <div class="formula-math">
+                        $$a^2 + b^2 = c^2$$
+                    </div>
+                </div>
+
+                <div class="formula-card formula-item">
+                    <h3 class="formula-title">Area of a Circle</h3>
+                    <p style="color: #94a3b8; font-size: 0.9rem; margin-bottom: 10px;">Given radius \(r\).</p>
+                    <div class="formula-math">
+                        $$A = \pi r^2$$
+                    </div>
+                </div>
+
+                <div class="formula-card formula-item">
+                    <h3 class="formula-title">Volume of a Sphere</h3>
+                    <p style="color: #94a3b8; font-size: 0.9rem; margin-bottom: 10px;">Given radius \(r\).</p>
+                    <div class="formula-math">
+                        $$V = \frac{4}{3} \pi r^3$$
+                    </div>
+                </div>
+
+            </div>
+
+            <!-- CALCULUS -->
+            <h2 class="category-header">Calculus</h2>
+            <div class="formula-grid" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 20px;">
+                
+                <div class="formula-card formula-item">
+                    <h3 class="formula-title">Power Rule (Derivative)</h3>
+                    <p style="color: #94a3b8; font-size: 0.9rem; margin-bottom: 10px;">Derivative of \(x^n\).</p>
+                    <div class="formula-math">
+                        $$\frac{d}{dx} x^n = n x^{n-1}$$
+                    </div>
+                </div>
+
+                <div class="formula-card formula-item">
+                    <h3 class="formula-title">Integration by Parts</h3>
+                    <p style="color: #94a3b8; font-size: 0.9rem; margin-bottom: 10px;">Product of functions.</p>
+                    <div class="formula-math">
+                        $$\int u \, dv = uv - \int v \, du$$
+                    </div>
+                </div>
+
+                <div class="formula-card formula-item">
+                    <h3 class="formula-title">Fundamental Theorem of Calculus</h3>
+                    <p style="color: #94a3b8; font-size: 0.9rem; margin-bottom: 10px;">Definite integral evaluation.</p>
+                    <div class="formula-math">
+                        $$\int_a^b f(x) \, dx = F(b) - F(a)$$
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
+    </section>
+
+    <script>
+        // Simple search filter
+        document.getElementById('searchInput').addEventListener('keyup', function() {
+            let filter = this.value.toLowerCase();
+            let items = document.querySelectorAll('.formula-item');
+            
+            items.forEach(function(item) {
+                let title = item.querySelector('.formula-title').innerText.toLowerCase();
+                if (title.includes(filter)) {
+                    item.style.display = 'block';
+                } else {
+                    item.style.display = 'none';
+                }
+            });
+        });
+    </script>
+</body>
+</html>
