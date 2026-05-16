@@ -6,6 +6,7 @@ import HomeScreen from './screens/HomeScreen';
 import AuthScreen from './screens/AuthScreen';
 import ChatScreen from './screens/ChatScreen';
 import DashboardScreen from './screens/DashboardScreen';
+import ToolsScreen from './screens/ToolsScreen';
 
 const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -22,6 +23,7 @@ function TabNavigator() {
     >
       <Tab.Screen name="Home" component={HomeScreen} />
       <Tab.Screen name="AI Tutor" component={ChatScreen} />
+      <Tab.Screen name="Tools" component={ToolsScreen} />
       <Tab.Screen name="Profile" component={DashboardScreen} />
     </Tab.Navigator>
   );

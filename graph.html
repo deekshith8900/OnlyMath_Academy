@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Graphing Plotter | OnlyMath Academy</title>
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&family=Outfit:wght@400;700;900&display=swap" rel="stylesheet">
+    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+    <!-- function-plot library and D3 dependency -->
+    <script src="https://unpkg.com/d3@3/d3.min.js"></script>
+    <script src="https://unpkg.com/function-plot@1/dist/function-plot.js"></script>
+    <style>
+        .graph-container {
+            background: white;
+            border-radius: 15px;
+            padding: 20px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow: hidden;
+            margin-bottom: 30px;
+        }
+
+        .controls-card {
+            background: rgba(255,255,255,0.05);
+            padding: 30px;
+            border-radius: 15px;
+            border: 1px solid rgba(255,255,255,0.1);
+        }
+
+        .function-row {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 15px;
+            align-items: center;
+        }
+
+        .function-input {
+            flex: 1;
+            padding: 12px;
+            border-radius: 8px;
+            border: 1px solid rgba(255,255,255,0.2);
+            background: rgba(0,0,0,0.3);
+            color: white;
+            font-size: 1.1rem;
+        }
+
+        .function-input:focus {
+            outline: none;
+            border-color: #38bdf8;
+        }
+
+        .color-indicator {
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+        }
+    </style>
+</head>
+<body class="dark-bg">
+
+    <header id="header" style="background: rgba(10, 10, 22, 0.9);">
+        <nav class="navbar container">
+            <a href="index.html" class="logo">Σ <span>OnlyMath</span></a>
+            <ul class="nav-links">
+                <li><a href="index.html">Home</a></li>
+                <li><a href="quiz.html">Quizzes</a></li>
+                <li><a href="whiteboard.html">Whiteboard</a></li>
+                <li><a href="formulas.html">Formulas</a></li>
+                <li><a href="dashboard.html" class="btn btn-outline" style="margin-left: 1rem;">Dashboard</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <section class="section" style="margin-top: 80px; min-height: 80vh;">
+        <div class="container">
+            
+            <div style="text-align: center; margin-bottom: 40px;">
+                <h1 style="font-family: 'Outfit', sans-serif; font-size: 3rem; color: #38bdf8;">Interactive Graphing Plotter</h1>
+                <p style="color: #94a3b8; font-size: 1.2rem;">Visualize math functions instantly. Try plotting multiple functions at once!</p>
+            </div>
+
+            <div style="display: grid; grid-template-columns: 1fr 350px; gap: 30px;">
+                
+                <!-- Graph Render Area -->
+                <div class="graph-container" id="plotArea"></div>
+
+                <!-- Controls -->
+                <div class="controls-card">
+                    <h3 style="color: white; margin-bottom: 20px; font-family: 'Outfit', sans-serif;">Functions</h3>
+                    
+                    <div id="functionInputsContainer">
+                        <div class="function-row">
+                            <div class="color-indicator" style="background: #38bdf8;"></div>
+                            <span style="color: white; font-size: 1.1rem;">y =</span>
+                            <input type="text" class="function-input func-expr" value="x^2" placeholder="e.g. x^2">
+                        </div>
+                        <div class="function-row">
+                            <div class="color-indicator" style="background: #f59e0b;"></div>
+                            <span style="color: white; font-size: 1.1rem;">y =</span>
+                            <input type="text" class="function-input func-expr" value="sin(x)" placeholder="e.g. sin(x)">
+                        </div>
+                        <div class="function-row">
+                            <div class="color-indicator" style="background: #10b981;"></div>
+                            <span style="color: white; font-size: 1.1rem;">y =</span>
+                            <input type="text" class="function-input func-expr" value="" placeholder="e.g. 2x + 3">
+                        </div>
+                    </div>
+
+                    <button id="plotBtn" class="btn btn-primary" style="width: 100%; margin-top: 20px;">Plot Graph</button>
+                    
+                    <p style="color: #94a3b8; font-size: 0.85rem; margin-top: 20px; text-align: center;">Use mouse to pan and scroll to zoom. Built with function-plot.</p>
+                </div>
+            </div>
+
+        </div>
+    </section>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const colors = ['#38bdf8', '#f59e0b', '#10b981', '#ef4444', '#a78bfa'];
+            
+            function renderPlot() {
+                const inputs = document.querySelectorAll('.func-expr');
+                const data = [];
+
+                inputs.forEach((input, index) => {
+                    const fn = input.value.trim();
+                    if (fn) {
+                        data.push({
+                            fn: fn,
+                            color: colors[index % colors.length]
+                        });
+                    }
+                });
+
+                if (data.length === 0) {
+                    data.push({ fn: '0', color: 'transparent' }); // empty graph
+                }
+
+                try {
+                    // Adjust width dynamically based on container
+                    const width = document.getElementById('plotArea').clientWidth - 40;
+                    
+                    functionPlot({
+                        target: '#plotArea',
+                        width: width,
+                        height: 500,
+                        grid: true,
+                        xAxis: { domain: [-10, 10] },
+                        yAxis: { domain: [-10, 10] },
+                        data: data
+                    });
+                } catch (e) {
+                    console.error("Plotting error:", e);
+                    // Ignore parsing errors while typing
+                }
+            }
+
+            document.getElementById('plotBtn').addEventListener('click', renderPlot);
+
+            // Re-render on window resize
+            window.addEventListener('resize', () => {
+                renderPlot();
+            });
+
+            // Initial render
+            setTimeout(renderPlot, 100);
+        });
+    </script>
+</body>
+</html>
