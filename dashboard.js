@@ -79,6 +79,61 @@ document.addEventListener('DOMContentLoaded', async () => {
         badgesContainer.innerHTML = '<p style="color: #94a3b8; width: 100%;">No badges earned yet. Keep solving problems to unlock them!</p>';
     }
 
+    // Avatar Shop Logic
+    const shopContainer = document.getElementById('avatarShopContainer');
+    shopContainer.innerHTML = '';
+    const avatars = [
+        { icon: '🤖', name: 'MathBot', price: 50 },
+        { icon: '🥷', name: 'Ninja', price: 100 },
+        { icon: '🧙‍♂️', name: 'Wizard', price: 150 },
+        { icon: '👩‍🔬', name: 'Scientist', price: 200 }
+    ];
+
+    avatars.forEach(av => {
+        const avEl = document.createElement('div');
+        avEl.style.background = 'rgba(255,255,255,0.05)';
+        avEl.style.border = '1px solid #10b981';
+        avEl.style.padding = '15px';
+        avEl.style.borderRadius = '10px';
+        avEl.style.width = '120px';
+        avEl.style.cursor = 'pointer';
+        
+        const isOwned = (currentAvatar === av.icon);
+        const canAfford = (bounties >= av.price);
+        
+        avEl.innerHTML = `
+            <div style="font-size: 3rem; margin-bottom: 5px;">${av.icon}</div>
+            <div style="color: white; font-weight: bold; font-size: 0.9rem;">${av.name}</div>
+            <div style="color: ${isOwned ? '#38bdf8' : (canAfford ? '#10b981' : '#ef4444')}; font-size: 0.8rem; font-weight: bold; margin-top: 5px;">
+                ${isOwned ? 'Equipped' : `💰 ${av.price}`}
+            </div>
+        `;
+
+        if (!isOwned) {
+            avEl.addEventListener('click', async () => {
+                if (canAfford) {
+                    if (confirm(`Buy ${av.name} for ${av.price} Bounties?`)) {
+                        try {
+                            const newBounties = bounties - av.price;
+                            await supabaseClient.from('user_profiles').update({ 
+                                bounties: newBounties,
+                                avatar: av.icon
+                            }).eq('id', user.id);
+                            alert(`You bought ${av.name}!`);
+                            window.location.reload();
+                        } catch (e) {
+                            console.error(e);
+                            alert("Failed to buy. (Make sure 'avatar' column exists in user_profiles table)");
+                        }
+                    }
+                } else {
+                    alert(`You need ${av.price - bounties} more Bounties to buy this!`);
+                }
+            });
+        }
+        shopContainer.appendChild(avEl);
+    });
+
     // Daily Challenge Logic
     const startDailyBtn = document.getElementById('startDailyBtn');
     const dailyArea = document.getElementById('dailyChallengeArea');
@@ -132,15 +187,18 @@ document.addEventListener('DOMContentLoaded', async () => {
             btnElement.style.background = '#10b981';
             btnElement.style.color = '#fff';
             
-            // Increment Streak and award +50 Bounties!
-            currentStreak += 1;
-            bounties += 50;
+            const { data, error } = await supabaseClient.from('user_profiles').select('*').eq('id', user.id).single();
+            if (error) throw error;
+            
+            let currentBounties = (data.bounties || 0) + 50;
+            let currentStreak = (data.current_streak || 0) + 1;
+
+            document.getElementById('bountiesDisplay').innerText = `${currentBounties} Bounties Collected.`;
             document.getElementById('streakCount').innerText = `${currentStreak} 🔥`;
-            document.getElementById('bountiesDisplay').innerText = `${bounties} Bounties Collected.`;
             
             try {
                 await supabaseClient.from('user_profiles').update({ 
-                    bounties: bounties,
+                    bounties: currentBounties,
                     current_streak: currentStreak,
                     last_played_date: todayStr
                 }).eq('id', user.id);

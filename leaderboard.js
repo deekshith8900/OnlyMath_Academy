@@ -7,7 +7,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         // Fetch top 10 users by bounties
         const { data, error } = await supabaseClient
             .from('user_profiles')
-            .select('id, bounties')
+            .select('id, bounties, avatar')
             .order('bounties', { ascending: false })
             .limit(10);
 
@@ -56,7 +56,9 @@ function renderPodium(top3) {
         div.style.flexDirection = 'column';
         div.style.alignItems = 'center';
         
+        const avatarIcon = user.avatar || '👤';
         div.innerHTML = `
+            <div style="font-size: 2rem; margin-bottom: 5px;">${avatarIcon}</div>
             <div class="podium-name">${getDisplayName(user.id, i)}</div>
             <div class="podium-place place-${placeNum}">
                 <div style="font-size: 1.5rem; margin-top: 10px;">${placeNum}</div>
@@ -79,9 +81,11 @@ function renderList(rest) {
     rest.forEach((user, idx) => {
         const item = document.createElement('div');
         item.className = 'list-item';
+        const avatarIcon = user.avatar || '👤';
         item.innerHTML = `
-            <div style="display: flex;">
+            <div style="display: flex; align-items: center; gap: 10px;">
                 <span class="list-rank">#${idx + 4}</span>
+                <span style="font-size: 1.5rem;">${avatarIcon}</span>
                 <span>${getDisplayName(user.id, idx + 3)}</span>
             </div>
             <span class="list-bounties">${user.bounties || 0} pts</span>
