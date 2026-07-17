@@ -30,6 +30,19 @@ document.addEventListener('DOMContentLoaded', async () => {
         });
     }
 
+    // Mobile Dropdown Toggle
+    const dropdownTrigger = document.querySelector('.dropdown-trigger');
+    const dropdown = document.querySelector('.dropdown');
+    if (dropdownTrigger && dropdown) {
+        dropdownTrigger.addEventListener('click', (e) => {
+            if (window.innerWidth <= 768) {
+                e.preventDefault();
+                e.stopPropagation();
+                dropdown.classList.toggle('active');
+            }
+        });
+    }
+
     // Scroll Reveal Animations
     const revealElements = document.querySelectorAll('.reveal, .reveal-left, .reveal-right');
     const revealOnScroll = () => {
